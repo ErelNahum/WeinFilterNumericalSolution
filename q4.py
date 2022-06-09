@@ -87,5 +87,6 @@ def midpoint_error_graph(dt, max_dt):
     plt.legend()
     plt.show()
 
+
 q4_midpoint(0.0001, True)
 midpoint_error_graph(0.0001, 0.01)
