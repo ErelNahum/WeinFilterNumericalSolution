@@ -69,24 +69,29 @@ def error(analytic, calculation):
 
 def midpoint_error_graph(dt, max_dt):
     intervals = math.ceil(max_dt / dt)
-    x = np.zeros(intervals)
-    y = np.zeros(intervals)
-    q = np.zeros(intervals)
+    time = np.zeros(intervals)
+    taylor = np.zeros(intervals)
+    midpoint = np.zeros(intervals)
 
     for t in range(intervals - 1):
-        x[t + 1] = x[t] + dt
-        y[t + 1] = error(c.analytic_T, q4_midpoint(x[t+1]))
-        q[t + 1] = error(c.analytic_T, q3.q3_graph(x[t+1]))
-    x = x[1:]
-    y = y[1:]
-    q = q[1:]
-    plt.plot(x, y, label="midpoint")
-    plt.plot(x, q, label="taylor")
+        time[t + 1] = time[t] + dt
+        taylor[t + 1] = error(c.analytic_T, q3.q3_graph(time[t+1]))
+        midpoint[t + 1] = error(c.analytic_T, q4_midpoint(time[t+1]))
+
+    time = time[1:]
+    taylor = taylor[1:]
+    midpoint = midpoint[1:]
+
+    plt.plot(time, taylor, label="taylor")
+    plt.plot(time, midpoint, label="midpoint")
+
     plt.xscale("log")
     plt.yscale("log")
+    plt.grid()
     plt.legend()
+
     plt.show()
 
 
-q4_midpoint(0.0001, True)
+#q4_midpoint(0.0001, True)
 midpoint_error_graph(0.0001, 0.01)
