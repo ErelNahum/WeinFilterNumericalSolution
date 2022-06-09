@@ -3,7 +3,8 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 
-def q3_graph(dt):
+
+def q3_graph(dt, draw=False):
     """drawing the graphs from t=0 to t=2pi/w"""
     w = c.q * c.B / c.m
     T = 2 * np.pi / w
@@ -25,17 +26,19 @@ def q3_graph(dt):
         vz[t + 1] = vz[t] + c.q * c.B / c.m * vy[t] * dt
         ry[t + 1] = ry[t] + vy[t] * dt
         rz[t + 1] = rz[t] + vz[t] * dt
+    if draw:
+        f, axis = plt.subplots(2, 1)
 
-    f, axis = plt.subplots(2, 1)
+        axis[0].set_title(r"$(r_y, r_z)$")
+        axis[0].grid()
+        axis[0].plot(ry, rz)
 
-    axis[0].set_title(r"$(r_y, r_z)$")
-    axis[0].grid()
-    axis[0].plot(ry, rz)
+        axis[1].set_title(r"$(v_y, v_z)$")
+        axis[1].grid()
+        axis[1].plot(vy, vz)
 
-    axis[1].set_title(r"$(v_y, v_z)$")
-    axis[1].grid()
-    axis[1].plot(vy, vz)
+        plt.show()
+    return ry[intervals - 1], rz[intervals - 1]
 
-    plt.show()
 
 q3_graph(0.0001)
