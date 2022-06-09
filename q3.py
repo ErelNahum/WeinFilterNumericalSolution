@@ -6,10 +6,8 @@ import matplotlib.pyplot as plt
 
 def q3_graph(dt, draw=False):
     """drawing the graphs from t=0 to t=2pi/w"""
-    w = c.q * c.B / c.m
-    T = 2 * np.pi / w
 
-    intervals = math.ceil(T / dt)
+    intervals = math.ceil(c.T / dt)
 
     vy = np.zeros(intervals)
     vz = np.zeros(intervals)
@@ -28,6 +26,7 @@ def q3_graph(dt, draw=False):
         rz[t + 1] = rz[t] + vz[t] * dt
     if draw:
         f, axis = plt.subplots(2, 1)
+        f.suptitle("first order taylor", fontsize=16)
 
         axis[0].set_title(r"$(r_y, r_z)$")
         axis[0].grid()
@@ -40,5 +39,5 @@ def q3_graph(dt, draw=False):
         plt.show()
     return ry[intervals - 1], rz[intervals - 1]
 
-
-q3_graph(0.0001)
+if __name__ == "__main__":
+    q3_graph(0.0001, True)
