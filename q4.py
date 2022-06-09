@@ -4,6 +4,7 @@ import math
 import matplotlib.pyplot as plt
 import q3
 
+
 def ay(vz):
     return c.q / c.m * (c.E - c.B * vz)
 
@@ -30,11 +31,11 @@ def q4_midpoint(dt, draw=False):
     rz[0] = 0
 
     for t in range(intervals - 1):
-        vy_k1 = dt * ay(vz[t])
+        vy_k1 = dt * az(vy[t])
         vy_k2 = dt * ay(vz[t] + 0.5 * vy_k1)
         vy[t + 1] = vy[t] + vy_k2
 
-        vz_k1 = dt * az(vy[t])
+        vz_k1 = dt * ay(vz[t])
         vz_k2 = dt * az(vy[t] + 0.5 * vz_k1)
         vz[t + 1] = vz[t] + vz_k2
 
@@ -45,6 +46,7 @@ def q4_midpoint(dt, draw=False):
         rz_k1 = dt * az(vy[t])
         rz_k2 = dt * (vz[t] + 0.5 * rz_k1)
         rz[t + 1] = rz[t] + rz_k2
+
     if draw:
         f, axis = plt.subplots(2, 1)
 
@@ -85,4 +87,5 @@ def midpoint_error_graph(dt, max_dt):
     plt.legend()
     plt.show()
 
-midpoint_error_graph(0.0001, 0.1)
+q4_midpoint(0.0001, True)
+midpoint_error_graph(0.0001, 0.01)
