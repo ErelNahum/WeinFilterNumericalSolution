@@ -1,0 +1,2 @@
+Rate of passed electrons: 0.19032600000000005
+Error: 0.004012819956090728
