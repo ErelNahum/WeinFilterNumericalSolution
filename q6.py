@@ -18,6 +18,7 @@ def az(vy):
 
 
 def q6_graph(intervals, Ei, y0, draw=False):
+    collision = False
     v0 = calculate_v0(c.q6.E0, c.q6.m)
     E = v0 * c.q6.B
     v0 = calculate_v0(Ei, c.q6.m)
@@ -35,6 +36,10 @@ def q6_graph(intervals, Ei, y0, draw=False):
         rz.append(rz[t] + vz[t] * dt)
 
         if abs(ry[t + 1]) > c.q6.R:
+            collision = True
+            break
+
+        if rz[-1] > 1:
             break
 
     if draw:
@@ -49,9 +54,10 @@ def q6_graph(intervals, Ei, y0, draw=False):
         # axis[1].grid()
         # axis[1].plot(vy, vz)
         plt.show()
-    return ry[-1], rz[-1]
+    return collision, math.sqrt(vy[-1]**2 + vz[-1]**2)
 
 
-q6_graph(100000, 4.98, -1.5e-3, True)
+if __name__ == "__main__":
+    print(q6_graph(1000, 5.02, 0, True))
 
 
