@@ -13,10 +13,10 @@ def az(vy):
     return c.q / c.m * c.B * vy
 
 
-def midpoint(dt, draw=False):
+def midpoint(intervals, draw=False):
     """drawing the graph from t=0 to t=2pi/w"""
 
-    intervals = math.ceil(c.T / dt)
+    dt = c.T / (intervals - 1)
 
     vy = np.zeros(intervals)
     vz = np.zeros(intervals)
@@ -62,10 +62,10 @@ def midpoint(dt, draw=False):
     return ry[intervals - 1], rz[intervals - 1]
 
 
-def runge_kutta(dt, draw=False):
+def runge_kutta(intervals, draw=False):
     """drawing the graph from t=0 to t=T with runge-kutta method"""
 
-    intervals = math.ceil(c.T / dt)
+    dt = c.T / (intervals - 1)
 
     vy = np.zeros(intervals)
     vz = np.zeros(intervals)
@@ -120,7 +120,6 @@ def runge_kutta(dt, draw=False):
         axis[1].plot(vy, vz)
 
         plt.show()
-
     return ry[intervals - 1], rz[intervals - 1]
 
 
@@ -133,21 +132,28 @@ def midpoint_error_graph(dt, max_dt):
     time = np.zeros(intervals)
     taylor_values = np.zeros(intervals)
     midpoint_values = np.zeros(intervals)
+    runge_values = np.zeros(intervals)
 
     for t in range(intervals - 1):
         time[t + 1] = time[t] + dt
-        taylor_values[t + 1] = error(c.analytic_T, q3.q3_graph(time[t+1]))
-        midpoint_values[t + 1] = error(c.analytic_T, midpoint(time[t + 1]))
+        intervals = math.ceil(c.T / time[t + 1]) + 1
+        taylor_values[t + 1] = error(c.analytic_T, q3.q3_graph(intervals))
+        midpoint_values[t + 1] = error(c.analytic_T, midpoint(intervals))
+        runge_values[t + 1] = error(c.analytic_T, runge_kutta(intervals))
 
     time = time[1:]
     taylor_values = taylor_values[1:]
     midpoint_values = midpoint_values[1:]
+    runge_values = runge_values[1:]
 
     plt.plot(time, taylor_values, label="taylor")
     plt.plot(time, midpoint_values, label="midpoint")
-
+    plt.plot(time, runge_values, label="runge kutta")
+    plt.suptitle("log log - error for dt")
     plt.xscale("log")
+    plt.xlabel("dt")
     plt.yscale("log")
+    plt.ylabel("error")
     plt.grid()
     plt.legend()
 
@@ -155,6 +161,6 @@ def midpoint_error_graph(dt, max_dt):
 
 
 if __name__ == "__main__":
-    midpoint(0.0001, True)
-    runge_kutta(0.0001, True)
+    midpoint_error_graph(0.0001, 1)
+
 
